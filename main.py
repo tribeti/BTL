@@ -6,23 +6,14 @@ from PIL import Image
 from io import BytesIO
 import easyocr
 import schedule
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def main():
-    # nguoi dung nhap
-    while True:
-        bien_so = input("Nhập biển số xe: ")
-        if bien_so.strip() == "":
-            print("Vui lòng không để trống biển số xe")
-            continue
-        break
-    try:
-        loai = int(input("Nhập loại xe: "))
-        if loai not in range(1,4):
-            print("Loi")
-            exit(0)
-    except ValueError:
-        print("Vui lòng nhập số")
-        exit(0)
+    bien_so = os.getenv("BIEN")
+    loai = os.getenv("LOAI")
 
     # init
     driver = webdriver.Chrome()
@@ -58,13 +49,20 @@ def main():
 
     btn = driver.find_element(By.CLASS_NAME,'btnTraCuu')
     btn.click()
-    time.sleep(2)
+    time.sleep(10)
     check_code = driver.find_element(By.CLASS_NAME,'xe_texterror').text
     if check_code != "":
-        print('Loi giai Catpcha')
+        print('Giải mã thất bại')
+        driver.close()
+        main()
     else :
         fin = driver.find_element(By.XPATH,'/html/body/center/div[3]/div/div[2]/div[2]/div/div/div[2]/div').text
-        print(fin)
+        # print(fin)
+        if fin == "Không tìm thấy kết quả !":
+            print('Không tìm thấy phương tiện của bạn')
+        else :
+            print('Tìm kiếm thành công')
+        driver.close()
 
 schedule.every().day.at("6:00").do(main)
 schedule.every().day.at("12:00").do(main)
