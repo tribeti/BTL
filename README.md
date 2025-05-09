@@ -34,8 +34,8 @@ Một script Python tự động kiểm tra vi phạm giao thông trên website 
 Clone dự án từ GitHub:
 
 ```bash
-git clone https://github.com/your-username/vehicle-violation-checker.git
-cd vehicle-violation-checker
+git clone https://github.com/tribeti/BTL.git
+cd BTL
 ```
 
 ### 2. Cài đặt thư viện cần thiết
